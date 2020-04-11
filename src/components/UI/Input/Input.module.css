@@ -18,3 +18,14 @@
     outline: none;
     background-color: #eee;
 }
+
+.Invalid {
+    border: 1px solid red;
+    background-color: #f1a6a6;
+}
+
+.Error{
+    color: red;
+    text-align: left;
+    margin: 0;
+}
