@@ -23,7 +23,7 @@ const checkTokenExpiry = (expiresIn) => {
     };
 };
 
-const logout = () => ({
+export const logout = () => ({
     type: actionTypes.TOKEN_EXPIRED
 });
 
@@ -48,4 +48,9 @@ export const auth = (email, password, isSignUp) => {
                 dispatch(authFail('Something went wrong'));
             });
     };
-};  
+};
+
+export const setAuthRedirect = path => ({
+    type: actionTypes.SET_AUTH_REDIRECT,
+    path
+});

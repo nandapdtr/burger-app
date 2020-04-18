@@ -17,3 +17,4 @@ export const AUTH_START = 'AUTH_START';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const TOKEN_EXPIRED = 'TOKEN_EXPIRED';
+export const SET_AUTH_REDIRECT = 'SET_AUTH_REDIRECT';

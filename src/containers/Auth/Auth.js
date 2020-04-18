@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
@@ -41,6 +42,12 @@ export class Auth extends Component {
         },
         isSignUp: true
     };
+
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.authRedirectTo !== '/') {
+            this.props.setAuthRedirect('/');
+        }
+    }
 
     checkValidity(value, rules) {
         let isValid = true;
@@ -114,8 +121,14 @@ export class Auth extends Component {
             errorMessage = <p>{this.props.error}</p>
         }
 
+        let redirect = null;
+        if (this.props.isAuthenticated) {
+            redirect = <Redirect to={this.props.authRedirectTo} />
+        }
+
         return (
             <div className={classes.Auth}>
+                {redirect}
                 {errorMessage}
                 <form onSubmit={this.authenticate}>
                     {form}
@@ -131,11 +144,15 @@ export class Auth extends Component {
 
 const mapStateToProps = state => ({
     error: state.auth.error,
-    loading: state.auth.loading
+    loading: state.auth.loading,
+    isAuthenticated: state.auth.token !== null,
+    authRedirectTo: state.auth.redirectTo,
+    buildingBurger: state.burger.building
 });
 
 const mapDispatchToProps = dispatch => ({
-    authenticate: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp))
+    authenticate: (email, password, isSignUp) => dispatch(actions.auth(email, password, isSignUp)),
+    setAuthRedirect: () => dispatch(actions.setAuthRedirect('/'))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Auth);

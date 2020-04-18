@@ -105,13 +105,13 @@ class ContactDetails extends Component {
         for (let identifier in this.state.contactForm) {
             contactData[identifier] = this.state.contactForm[identifier].value;
         }
-        const order = {
+        const orderData = {
             ingredients: this.props.ings,
             price: this.props.totalPrice,
             contactData
         };
 
-        this.props.orderBurger(order);
+        this.props.orderBurger(orderData, this.props.token);
     };
 
     checkValidity(value, rules) {
@@ -192,13 +192,14 @@ const mapStateToProps = state => {
     return {
         ings: state.burger.ingredients,
         totalPrice: state.burger.totalPrice,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        orderBurger: (orderData) => dispatch(actions.orderBurger(orderData))
+        orderBurger: (orderData, token) => dispatch(actions.orderBurger(orderData, token))
     };
 };
 
