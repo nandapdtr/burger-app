@@ -15,7 +15,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
             });
 
             this.resInterceptor = axios.interceptors.response.use(res => res, err => {
-                console.log('error interceptor');
                 this.setState({ error: err });
                 throw err;
             });
@@ -23,7 +22,6 @@ const withErrorHandler = (WrappedComponent, axios) => {
 
         componentWillUnmount() {
             //this is required when we use this hoc in more than one component
-            console.log(this.reqInterceptor, this.resInterceptor);
             axios.interceptors.request.eject(this.reqInterceptor);
             axios.interceptors.response.eject(this.resInterceptor);
         }

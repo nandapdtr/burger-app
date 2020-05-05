@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions/index';
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class ContactDetails extends Component {
     state = {
@@ -28,11 +29,12 @@ class ContactDetails extends Component {
             email: {
                 elementType: 'input',
                 elementConfig: {
-                    type: 'text',
+                    type: 'email',
                     placeholder: 'Your Email'
                 },
                 validation: {
-                    required: true
+                    required: true,
+                    isEmail: true
                 },
                 valid: false,
                 value: '',
@@ -115,35 +117,19 @@ class ContactDetails extends Component {
         this.props.orderBurger(orderData, this.props.token);
     };
 
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (rules.required) {
-            isValid = !!value && isValid;
-        }
-        if (rules.minLenght) {
-            isValid = value.length >= rules.minLenght && isValid;
-        }
-        if (rules.maxLenght) {
-            isValid = value.length <= rules.maxLenght && isValid;
-        }
-        return isValid;
-    }
-
     inputChangeHandler = (event, identifier) => {
-        const contactDetails = {
-            ...this.state.contactForm
-        };
-        const contactElement = {
-            ...contactDetails[identifier]
-        };
-        contactElement.value = event.target.value;
-        contactElement.touched = true;
-        contactElement.valid = this.checkValidity(contactElement.value, contactElement.validation);
+        const contactElement = updateObject(this.state.contactForm[identifier], {
+            value: event.target.value,
+            touched: true,
+            valid: checkValidity(event.target.value, this.state.contactForm[identifier].validation)
+        });
+        const contactDetails = updateObject(this.state.contactForm, {
+            [identifier]: contactElement
+        });
         let isFormValid = true;
         for (let formIdentifier in contactDetails) {
             isFormValid = formIdentifier === identifier ? contactElement.valid && isFormValid : contactDetails[formIdentifier].valid && isFormValid;
         }
-        contactDetails[identifier] = contactElement;
         this.setState({
             contactForm: contactDetails,
             isFormValid

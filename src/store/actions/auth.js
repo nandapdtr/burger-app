@@ -16,7 +16,6 @@ const authStart = () => ({
 });
 
 const checkTokenExpiry = (expiresIn) => {
-    console.log('expiresIn ', expiresIn);
     return dispatch => {
         setTimeout(() => {
             dispatch(logout());

@@ -7,6 +7,7 @@ import Button from '../../components/UI/Button/Button';
 import classes from './Auth.module.css';
 import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import { updateObject, checkValidity } from '../../shared/utility';
 
 export class Auth extends Component {
     state = {
@@ -49,34 +50,14 @@ export class Auth extends Component {
         }
     }
 
-    checkValidity(value, rules) {
-        let isValid = true;
-        if (rules.required) {
-            isValid = !!value && isValid;
-        }
-        if (rules.minLenght) {
-            isValid = value.length >= rules.minLenght && isValid;
-        }
-        if (rules.isEmail) {
-            const regEx = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-            isValid = regEx.test(value) && isValid;
-        }
-        if (rules.maxLenght) {
-            isValid = value.length <= rules.maxLenght && isValid;
-        }
-        return isValid;
-    }
-
     inputChangeHandler = (event, controlName) => {
-        const updatedControls = {
-            ...this.state.controls,
-            [controlName]: {
-                ...this.state.controls[controlName],
+        const updatedControls = updateObject(this.state.controls, {
+            [controlName]: updateObject(this.state.controls[controlName], {
                 value: event.target.value,
                 touched: true,
-                valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation)
-            }
-        };
+                valid: checkValidity(event.target.value, this.state.controls[controlName].validation)
+            })
+        });
         this.setState({ controls: updatedControls });
     };
 
