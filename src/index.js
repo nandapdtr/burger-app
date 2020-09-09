@@ -11,14 +11,14 @@ import burgerBuilderReducer from './store/reducers/burgerBuilder';
 import orderReducer from './store/reducers/order';
 import authReducer from './store/reducers/auth';
 
-const rootReducre = combineReducers({
+const rootReducer = combineReducers({
     burger: burgerBuilderReducer,
     order: orderReducer,
     auth: authReducer
 });
 
 const composeEnhancer = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
-const store = createStore(rootReducre, composeEnhancer(applyMiddleware(thunk)));
+const store = createStore(rootReducer, composeEnhancer(applyMiddleware(thunk)));
 
 const app = (
     <Provider store={store}>
