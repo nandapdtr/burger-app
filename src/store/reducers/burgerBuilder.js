@@ -4,7 +4,7 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
     ingredients: null,
     totalPrice: 4,
-    error: false,
+    error: null,
     loading: false,
     building: false
 };
@@ -45,7 +45,7 @@ const getIngredientsSuccess = (state, action) => {
     const updatedState = {
         ingredients: action.ingredients,
         totalPrice,
-        error: false,
+        error: null,
         loading: false,
         building: false
     };
@@ -57,7 +57,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
         case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
         case actionTypes.GET_INGREDIENTS_SUCCESS: return getIngredientsSuccess(state, action);
-        case actionTypes.GET_INGREDIENTS_FAIL: return updateObject(state, { error: action.error, loading: true });
+        case actionTypes.GET_INGREDIENTS_FAIL: return updateObject(state, { error: action.error, loading: false });
         case actionTypes.GET_INGREDIENTS_INIT: return updateObject(state, { loading: true });
         default: return state;
     }
